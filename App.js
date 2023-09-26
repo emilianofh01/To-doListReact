@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import {
+  Animated,
   Button,
   Image,
   Pressable,
@@ -9,106 +10,59 @@ import {
   TextInput,
   View,
 } from "react-native";
+import LoginView from "./Views/logIn";
+import ForgotPassword from "./Views/forgotPassword";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import UpdatePassword from "./Views/updatePassword";
+import SignUp from "./Views/signUp";
 
 export default function App() {
-  const [validEmail, setValidEmail] = useState();
-  const [validPassword, setValidPassword] = useState();
+  // const onTextChanged = ({ callback = Function }) => {};
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("")
-
-  const logIn = () => {
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    const passwordRegex = /^(?=.*[A-Z]).{8,}$/;
-
-
-    setValidEmail(emailRegex.test(email));
-    setValidPassword(passwordRegex.test(password));
-    console.log(validEmail, validPassword);
-  }
+  const Stack = createNativeStackNavigator();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.logo}
-          source={require("./assets/logo.jpg")}
-        ></Image>
-      </View>
-      <View style={styles.inputsContainer}>
-        <Text style={styles.loginTitle}>LogIn</Text>
-        <TextInput
-          onChangeText={text => setEmail(text)}
-          placeholderTextColor={"#444444"}
-          style={[styles.input, !validEmail && validEmail!=undefined ? {borderColor: 'red'}:'']}
-          placeholder="Email"
-          keyboardType="email-address"
-        ></TextInput>
-        <TextInput
-          onChangeText={text => setPassword(text)}
-          style={[styles.input, !validPassword && validPassword!=undefined ? {borderColor: 'red'}:'']}
-          placeholder="Contraseña"
-          keyboardType="visible-password"
-          secureTextEntry={true}
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Login"
+        screenOptions={{
+          headerShadowVisible: false,
+          headerStyle: {
+            shadowOpacity: 0,
+            backgroundColor: "#3a5f93",
+          },
+          headerTintColor: 'white',
+          animation: "slide_from_right",
+        }}
+      >
+        <Stack.Screen
+          name="Login"
+          component={LoginView}
+          options={{ headerShown: false }}
         />
-        <View style={{display: 'flex', gap: 20}}>
-          <Button onPress={logIn} color={"#355384"} title="Iniciar Sesión"></Button>
-          <View style={{maxWidth:'100%'}}>
-            <Button title="¿Olvidaste tu contraseña?"></Button>
-          </View>
-        </View>
-      </View>
-      {/* <StatusBar style="auto" /> */}
-    </View>
+        <Stack.Screen
+          name="forgotPassword"
+          component={ForgotPassword}
+          options={{
+            headerTitle: "Olvide mi contraseña",
+          }}
+        />
+        <Stack.Screen
+          name="updatePassword"
+          component={UpdatePassword}
+          options={{
+            headerTitle: "Recuperar contraseña",
+          }}
+        />
+        <Stack.Screen
+          name="signUp"
+          component={SignUp}
+          options={{
+            headerTitle: "Registrar cuenta",
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flex: 1,
-    backgroundColor: "#fff",
-    // flexDirection: "column",
-    // alignItems: "center",
-    justifyContent: "center",
-  },
-  imageContainer: {
-    width: "100%",
-    height: 300,
-    // backgroundColor: "red",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  logo: {
-    // borderRadius: 500,
-    width: 200,
-    height: 200,
-  },
-  inputsContainer: {
-    flex: 1,
-    display: "flex",
-    alignItems: "stretch",
-    paddingHorizontal: 20,
-  },
-  loginTitle: {
-    paddingVertical: 20,
-    fontWeight: "900",
-    fontSize: 20,
-    textAlign: "center",
-  },
-  input: {
-    // width: '85%',
-    height: 50,
-    borderWidth: 2,
-    borderColor: "#3a5f93",
-    marginBottom: 20,
-    borderRadius: 10,
-    paddingHorizontal: 20,
-    fontWeight: "800",
-  },
-
-  button: {
-    width: "85%",
-  },
-});
