@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Animated, Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 function LoginView({ navigation }) {
@@ -15,6 +15,9 @@ function LoginView({ navigation }) {
 
     setValidEmail(emailRegex.test(email));
     setValidPassword(passwordRegex.test(password));
+    if(validEmail && validPassword) {
+      navigation.navigate('listView');
+    }
   };
 
   return (

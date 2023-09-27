@@ -1,21 +1,11 @@
-import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
-import {
-  Animated,
-  Button,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
 import LoginView from "./Views/logIn";
 import ForgotPassword from "./Views/forgotPassword";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import UpdatePassword from "./Views/updatePassword";
 import SignUp from "./Views/signUp";
+import ListView from "./Views/ListView";
+import { StatusBar, StyleSheet } from "react-native";
 
 export default function App() {
   // const onTextChanged = ({ callback = Function }) => {};
@@ -25,14 +15,15 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="listView"
         screenOptions={{
           headerShadowVisible: false,
           headerStyle: {
             shadowOpacity: 0,
             backgroundColor: "#3a5f93",
           },
-          headerTintColor: 'white',
+          statusBarColor: "#3a5f93",
+          headerTintColor: "white",
           animation: "slide_from_right",
         }}
       >
@@ -62,7 +53,36 @@ export default function App() {
             headerTitle: "Registrar cuenta",
           }}
         />
+
+        <Stack.Screen
+          name="listView"
+          component={ListView}
+          options={{
+            headerBackVisible: false,
+            headerTitle: "To-do list",
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: '#3a5f93',
+            },
+            headerTintColor: 'white',
+          }}
+        />
       </Stack.Navigator>
+      
     </NavigationContainer>
   );
 }
+
+export const globalStyles = StyleSheet.create({
+  input: {
+    flex: 1,
+    height: 50,
+    borderWidth: 2,
+    borderColor: "#3a5f93",
+    backgroundColor: 'white',
+    // marginBottom: 20,
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    fontWeight: "800",
+  },
+})
